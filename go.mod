@@ -1,4 +1,4 @@
-module htmlink
+module github.com/melvdlin/gophercises_htmlink
 
 go 1.19
 

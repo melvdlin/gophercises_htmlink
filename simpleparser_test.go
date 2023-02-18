@@ -1,8 +1,8 @@
 package main
 
 import (
-	linkparser2 "htmlink/linkparser"
-	utils2 "htmlink/utils"
+	"github.com/melvdlin/gophercises_htmlink/linkparser"
+	"github.com/melvdlin/gophercises_htmlink/utils"
 	"path/filepath"
 	"testing"
 )
@@ -15,13 +15,13 @@ func TestParser(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	example1Expected := []linkparser2.HtmlLink{
+	example1Expected := []linkparser.HtmlLink{
 		&expectedLink{
 			href: "/other-page",
 			text: "A link to another page",
 		},
 	}
-	example2Expected := []linkparser2.HtmlLink{
+	example2Expected := []linkparser.HtmlLink{
 		&expectedLink{
 			href: "https://www.twitter.com/joncalhoun",
 			text: "Check me out on twitter",
@@ -31,7 +31,7 @@ func TestParser(t *testing.T) {
 			text: "Gophercises is on Github!",
 		},
 	}
-	example3Expected := []linkparser2.HtmlLink{
+	example3Expected := []linkparser.HtmlLink{
 		&expectedLink{
 			href: "#",
 			text: "Login",
@@ -45,46 +45,46 @@ func TestParser(t *testing.T) {
 			text: "@marcusolsson",
 		},
 	}
-	example4Expected := []linkparser2.HtmlLink{
+	example4Expected := []linkparser.HtmlLink{
 		&expectedLink{
 			href: "/dog-cat",
 			text: "cog cat",
 		},
 	}
 
-	parserUnderTest = linkparser2.SimpleLinkParser()
+	parserUnderTest = linkparser.SimpleLinkParser()
 
 	expectedLinks = example1Expected
-	htmlText, err = utils2.ReadFile(example1Path)
+	htmlText, err = utils.ReadFile(example1Path)
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Run("Ex1", testParser)
 
 	expectedLinks = example2Expected
-	htmlText, err = utils2.ReadFile(example2Path)
+	htmlText, err = utils.ReadFile(example2Path)
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Run("Ex2", testParser)
 
 	expectedLinks = example3Expected
-	htmlText, err = utils2.ReadFile(example3Path)
+	htmlText, err = utils.ReadFile(example3Path)
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Run("Ex3", testParser)
 
 	expectedLinks = example4Expected
-	htmlText, err = utils2.ReadFile(example4Path)
+	htmlText, err = utils.ReadFile(example4Path)
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Run("Ex4", testParser)
 }
 
-var parserUnderTest linkparser2.HtmlLinkParser
-var expectedLinks []linkparser2.HtmlLink
+var parserUnderTest linkparser.HtmlLinkParser
+var expectedLinks []linkparser.HtmlLink
 var htmlText []byte
 
 type expectedLink struct {
@@ -109,7 +109,7 @@ func testParser(t *testing.T) {
 		t.Fail()
 	}
 	for _, expected := range expectedLinks {
-		if !utils2.AnyInSlice(links, func(_ int, link linkparser2.HtmlLink) bool {
+		if !utils.AnyInSlice(links, func(_ int, link linkparser.HtmlLink) bool {
 			return link.Href() == expected.Href() && link.Text() == expected.Text()
 		}) {
 			t.Fail()
